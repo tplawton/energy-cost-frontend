@@ -1,16 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Typed from "typed.js";
-
-const OPTIONS = {
-state_postal: ["AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"],
-BA_climate: ["Cold", "Hot-Dry", "Hot-Humid", "Marine", "Mixed-Dry", "Mixed-Humid", "Subarctic", "Very-Cold"],
-IECC_climate_code: ["1A", "2A", "2B", "3A", "3B", "3C", "4A", "4B", "4C", "5A", "5B", "6A", "6B", "7A", "7AK", "7B", "8AK"],
-TYPEHUQ: ["1 - Mobile Home", "2 - Single-Family Detached", "3 - Single-Family Attached", "4 - Apartment (2-4 units)", "5 - Apartment (5+ units)"],
-YEARMADERANGE: ["1 - Before 1950", "2 - 1950-1959", "3 - 1960-1969", "4 - 1970-1979", "5 - 1980-1989", "6 - 1990-1999", "7 - 2000-2009", "8 - 2010-2015", "9 - 2016 or later"],
-FUELHEAT: ["1 - Electricity", "2 - Natural Gas", "3 - Fuel Oil", "5 - Wood", "7 - Other", "99 - Not reported"],
-WALLTYPE: ["1 - Brick", "2 - Stucco", "3 - Siding/Wood", "4 - Vinyl", "5 - Concrete Block", "6 - Stone", "7 - Other", "99 - Not reported"],
-OVEN: ["0 - None", "1 - Electric", "2 - Gas", "3 - Other"]
-};
+import OPTIONS from "./options";
 
 export default function EnergyPredictor() {
 const [formData, setFormData] = useState({
@@ -40,14 +29,6 @@ useEffect(() => {
     const { BEDROOMS, NCOMBATH, OTHROOMS } = formData;
     const totalRooms = Number(BEDROOMS || 0) + Number(NCOMBATH || 0) + Number(OTHROOMS || 0);
     setFormData((prev) => ({ ...prev, TOTROOMS: totalRooms }));
-
-    const typed = new Typed("#typed", {
-    strings: ["🔌 Energy Cost Predictor"],
-    typeSpeed: 50,
-    backSpeed: 30,
-    loop: true,
-    });
-    return () => typed.destroy();
 }, [formData.BEDROOMS, formData.NCOMBATH, formData.OTHROOMS]);
 
 const handleChange = (e) => {
@@ -67,13 +48,13 @@ const handleSubmit = async (e) => {
 };
 
 const selectField = (label, name, options) => (
-    <div>
-    <label className="text-sm text-white font-medium mb-1 block">{label}</label>
+    <div className="transition-all duration-300">
+    <label className="block text-sm font-medium capitalize mb-1 text-white">{label}</label>
     <select
         name={name}
         value={formData[name]}
         onChange={handleChange}
-        className="w-full bg-black border border-white text-white px-4 py-2 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full border border-gray-700 bg-gray-900 text-white rounded px-3 py-2 text-sm shadow-sm focus:ring-blue-500 focus:border-blue-500"
     >
         {options.map((opt) => (
         <option key={opt} value={opt}>{opt}</option>
@@ -83,49 +64,65 @@ const selectField = (label, name, options) => (
 );
 
 const numberField = (label, name) => (
-    <div>
-    <label className="text-sm text-white font-medium mb-1 block">{label}</label>
+    <div className="transition-all duration-300">
+    <label className="block text-sm font-medium capitalize mb-1 text-white">{label}</label>
     <input
         type="number"
         name={name}
         value={formData[name]}
         onChange={handleChange}
-        className="w-full bg-black border border-white text-white px-4 py-2 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full border border-gray-700 bg-gray-900 text-white rounded px-3 py-2 text-sm shadow-sm focus:ring-blue-500 focus:border-blue-500"
     />
     </div>
 );
 
 return (
-    <div className="min-h-screen bg-black text-white px-4 py-12">
-    <div className="max-w-5xl mx-auto bg-[#111] border border-gray-700 rounded-3xl p-10 shadow-2xl relative z-10">
-        <h1 id="typed" className="text-4xl md:text-5xl font-bold text-center mb-2"></h1>
-        <p className="text-center text-gray-400 mb-8">Estimate your annual electricity cost with real data.</p>
+    <div className="min-h-screen bg-gradient-to-tr from-gray-900 to-gray-800 text-white py-12 px-6 flex justify-center items-center">
+    <div className="max-w-5xl w-full bg-gray-950 rounded-3xl shadow-2xl p-10 space-y-10">
+        <h1 className="text-5xl font-extrabold text-center text-blue-400 drop-shadow-lg">Energy Cost Predictor</h1>
+        <p className="text-center text-gray-400">Estimate your annual electricity cost based on your home's characteristics.</p>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form onSubmit={handleSubmit} className="space-y-10">
+        <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-6 border border-gray-700 p-6 rounded-xl">
+            <legend className="text-lg font-semibold text-blue-300">Location & Climate</legend>
             {selectField("State", "state_postal", OPTIONS.state_postal)}
             {selectField("Climate Zone", "BA_climate", OPTIONS.BA_climate)}
             {selectField("IECC Code", "IECC_climate_code", OPTIONS.IECC_climate_code)}
+        </fieldset>
+
+        <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-6 border border-gray-700 p-6 rounded-xl">
+            <legend className="text-lg font-semibold text-blue-300">Property Details</legend>
             {selectField("Home Type", "TYPEHUQ", OPTIONS.TYPEHUQ)}
             {selectField("Year Built", "YEARMADERANGE", OPTIONS.YEARMADERANGE)}
             {numberField("Square Footage", "TOTSQFT_EN")}
             {numberField("Stories", "STORIES")}
             {selectField("Wall Type", "WALLTYPE", OPTIONS.WALLTYPE)}
+        </fieldset>
+
+        <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-6 border border-gray-700 p-6 rounded-xl">
+            <legend className="text-lg font-semibold text-blue-300">Household & Rooms</legend>
             {numberField("Bedrooms", "BEDROOMS")}
             {numberField("Full Baths", "NCOMBATH")}
             {numberField("Half Baths", "NHAFBATH")}
             {numberField("Other Rooms", "OTHROOMS")}
+            <div className="md:col-span-2 text-sm text-gray-400 font-medium">
+            Total Rooms: <span className="font-semibold text-white">{formData.TOTROOMS}</span>
+            </div>
             {numberField("Household Members", "NHSLDMEM")}
+        </fieldset>
+
+        <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-6 border border-gray-700 p-6 rounded-xl">
+            <legend className="text-lg font-semibold text-blue-300">Appliances</legend>
             {selectField("Heating Fuel", "FUELHEAT", OPTIONS.FUELHEAT)}
             {numberField("Refrigerators", "NUMFRIG")}
             {numberField("Freezers", "NUMFREEZ")}
-            {selectField("Oven Type", "OVEN", OPTIONS.OVEN)}
-        </div>
+            {selectField("Oven", "OVEN", OPTIONS.OVEN)}
+        </fieldset>
 
-        <div className="text-center mt-10">
+        <div className="text-center">
             <button
             type="submit"
-            className="px-8 py-3 text-lg font-semibold bg-white text-black rounded-full hover:scale-105 transition-transform"
+            className="mt-6 px-8 py-3 bg-blue-600 text-white text-lg font-semibold rounded-xl shadow-lg hover:bg-blue-700 transition-all"
             >
             🔍 Predict
             </button>
@@ -133,11 +130,11 @@ return (
         </form>
 
         {result && (
-        <div className="mt-10 p-6 bg-green-700 bg-opacity-10 border border-green-500 rounded-2xl text-center">
-            <h2 className="text-2xl font-bold mb-2 text-green-300">📈 Prediction Results</h2>
-            <p className="text-lg">Predicted Annual kWh: <span className="font-bold">{result.predicted_kwh}</span></p>
-            <p className="text-lg">Estimated Cost: <span className="font-bold">${result.estimated_cost_usd}</span></p>
-            <p className="text-sm text-gray-400">Rate Used: ${result.rate_used}/kWh</p>
+        <div className="mt-12 p-8 bg-green-100 bg-opacity-5 border border-green-300 rounded-xl shadow-md text-center">
+            <h2 className="text-2xl font-semibold mb-3 text-green-300">Prediction Results</h2>
+            <p className="text-lg font-medium">Predicted Annual kWh: <span className="font-bold text-white">{result.predicted_kwh}</span></p>
+            <p className="text-lg font-medium">Estimated Cost ($): <span className="font-bold text-white">{result.estimated_cost_usd}</span></p>
+            <p className="text-sm text-gray-400">Rate Used: ${result.rate_used} per kWh</p>
         </div>
         )}
     </div>
