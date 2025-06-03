@@ -32,7 +32,6 @@ const [formData, setFormData] = useState({
     WALLTYPE: "1 - Brick",
     OVEN: "1 - Electric"
 });
-
 const [result, setResult] = useState(null);
 
 useEffect(() => {
@@ -58,13 +57,13 @@ const handleSubmit = async (e) => {
 };
 
 const selectField = (label, name, options) => (
-    <div>
-    <label className="block text-sm font-medium capitalize mb-1 text-gray-700">{label}</label>
+    <div className="flex flex-col">
+    <label className="text-sm text-gray-600 mb-1">{label}</label>
     <select
         name={name}
         value={formData[name]}
         onChange={handleChange}
-        className="w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm shadow-sm focus:ring-blue-500 focus:border-blue-500"
+        className="rounded-xl border border-gray-300 px-4 py-2 bg-white focus:ring-2 focus:ring-blue-500"
     >
         {options.map((opt) => (
         <option key={opt} value={opt}>{opt}</option>
@@ -74,65 +73,53 @@ const selectField = (label, name, options) => (
 );
 
 const numberField = (label, name) => (
-    <div>
-    <label className="block text-sm font-medium capitalize mb-1 text-gray-700">{label}</label>
+    <div className="flex flex-col">
+    <label className="text-sm text-gray-600 mb-1">{label}</label>
     <input
         type="number"
         name={name}
         value={formData[name]}
         onChange={handleChange}
-        className="w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm shadow-sm focus:ring-blue-500 focus:border-blue-500"
+        className="rounded-xl border border-gray-300 px-4 py-2 bg-white focus:ring-2 focus:ring-blue-500"
     />
     </div>
 );
 
 return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-12 px-4">
-    <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-8 space-y-8">
-        <h1 className="text-4xl font-bold text-center text-blue-800">🔌 Energy Cost Predictor</h1>
-        <p className="text-center text-gray-600">Estimate your annual electricity cost based on your home's characteristics.</p>
+    <div className="min-h-screen bg-gradient-to-r from-sky-100 to-blue-200 p-10 font-sans">
+    <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl p-10">
+        <h1 className="text-5xl font-bold text-center text-blue-700 mb-6">🔌 Energy Cost Predictor</h1>
+        <p className="text-center text-gray-600 mb-12">Estimate your annual electricity usage and cost based on your home's characteristics.</p>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
-        <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-4 border border-gray-200 p-4 rounded-xl">
-            <legend className="text-lg font-semibold text-blue-700">Location & Climate</legend>
+        <form onSubmit={handleSubmit} className="space-y-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {selectField("State", "state_postal", OPTIONS.state_postal)}
             {selectField("Climate Zone", "BA_climate", OPTIONS.BA_climate)}
             {selectField("IECC Code", "IECC_climate_code", OPTIONS.IECC_climate_code)}
-        </fieldset>
-
-        <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-4 border border-gray-200 p-4 rounded-xl">
-            <legend className="text-lg font-semibold text-blue-700">Property Details</legend>
             {selectField("Home Type", "TYPEHUQ", OPTIONS.TYPEHUQ)}
             {selectField("Year Built", "YEARMADERANGE", OPTIONS.YEARMADERANGE)}
             {numberField("Square Footage", "TOTSQFT_EN")}
             {numberField("Stories", "STORIES")}
             {selectField("Wall Type", "WALLTYPE", OPTIONS.WALLTYPE)}
-        </fieldset>
-
-        <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-4 border border-gray-200 p-4 rounded-xl">
-            <legend className="text-lg font-semibold text-blue-700">Household & Rooms</legend>
             {numberField("Bedrooms", "BEDROOMS")}
             {numberField("Full Baths", "NCOMBATH")}
             {numberField("Half Baths", "NHAFBATH")}
             {numberField("Other Rooms", "OTHROOMS")}
-            <div className="md:col-span-2 text-sm text-gray-600 font-medium">
-            Total Rooms: <span className="font-semibold">{formData.TOTROOMS}</span>
-            </div>
             {numberField("Household Members", "NHSLDMEM")}
-        </fieldset>
-
-        <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-4 border border-gray-200 p-4 rounded-xl">
-            <legend className="text-lg font-semibold text-blue-700">Appliances</legend>
             {selectField("Heating Fuel", "FUELHEAT", OPTIONS.FUELHEAT)}
             {numberField("Refrigerators", "NUMFRIG")}
             {numberField("Freezers", "NUMFREEZ")}
             {selectField("Oven", "OVEN", OPTIONS.OVEN)}
-        </fieldset>
+        </div>
+
+        <div className="text-right text-sm text-gray-500">
+            Total Rooms: <strong>{formData.TOTROOMS}</strong>
+        </div>
 
         <div className="text-center">
             <button
             type="submit"
-            className="mt-6 px-6 py-3 bg-blue-600 text-white text-lg font-semibold rounded-lg shadow hover:bg-blue-700 transition"
+            className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-3 rounded-full shadow-lg transition duration-300"
             >
             🔍 Predict
             </button>
@@ -140,10 +127,10 @@ return (
         </form>
 
         {result && (
-        <div className="mt-10 p-6 bg-green-50 border border-green-200 rounded-xl shadow-md text-center">
-            <h2 className="text-xl font-semibold mb-2 text-green-700">Prediction Results</h2>
-            <p className="text-lg font-medium">Predicted Annual kWh: <span className="font-semibold">{result.predicted_kwh}</span></p>
-            <p className="text-lg font-medium">Estimated Cost ($): <span className="font-semibold">{result.estimated_cost_usd}</span></p>
+        <div className="mt-12 bg-green-50 border border-green-300 rounded-2xl p-6 text-center">
+            <h2 className="text-2xl font-semibold text-green-700 mb-2">Prediction Results</h2>
+            <p className="text-lg">Predicted Annual kWh: <strong>{result.predicted_kwh}</strong></p>
+            <p className="text-lg">Estimated Cost ($): <strong>{result.estimated_cost_usd}</strong></p>
             <p className="text-sm text-gray-600">Rate Used: ${result.rate_used} per kWh</p>
         </div>
         )}
