@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Typed from "typed.js";
 
 const OPTIONS = {
 state_postal: ["AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"],
@@ -32,12 +33,21 @@ const [formData, setFormData] = useState({
     WALLTYPE: "1 - Brick",
     OVEN: "1 - Electric"
 });
+
 const [result, setResult] = useState(null);
 
 useEffect(() => {
     const { BEDROOMS, NCOMBATH, OTHROOMS } = formData;
     const totalRooms = Number(BEDROOMS || 0) + Number(NCOMBATH || 0) + Number(OTHROOMS || 0);
     setFormData((prev) => ({ ...prev, TOTROOMS: totalRooms }));
+
+    const typed = new Typed("#typed", {
+    strings: ["🔌 Energy Cost Predictor"],
+    typeSpeed: 50,
+    backSpeed: 30,
+    loop: true,
+    });
+    return () => typed.destroy();
 }, [formData.BEDROOMS, formData.NCOMBATH, formData.OTHROOMS]);
 
 const handleChange = (e) => {
@@ -57,13 +67,13 @@ const handleSubmit = async (e) => {
 };
 
 const selectField = (label, name, options) => (
-    <div className="flex flex-col">
-    <label className="text-sm text-gray-600 mb-1">{label}</label>
+    <div>
+    <label className="text-sm text-white font-medium mb-1 block">{label}</label>
     <select
         name={name}
         value={formData[name]}
         onChange={handleChange}
-        className="rounded-xl border border-gray-300 px-4 py-2 bg-white focus:ring-2 focus:ring-blue-500"
+        className="w-full bg-black border border-white text-white px-4 py-2 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
     >
         {options.map((opt) => (
         <option key={opt} value={opt}>{opt}</option>
@@ -73,26 +83,26 @@ const selectField = (label, name, options) => (
 );
 
 const numberField = (label, name) => (
-    <div className="flex flex-col">
-    <label className="text-sm text-gray-600 mb-1">{label}</label>
+    <div>
+    <label className="text-sm text-white font-medium mb-1 block">{label}</label>
     <input
         type="number"
         name={name}
         value={formData[name]}
         onChange={handleChange}
-        className="rounded-xl border border-gray-300 px-4 py-2 bg-white focus:ring-2 focus:ring-blue-500"
+        className="w-full bg-black border border-white text-white px-4 py-2 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
     </div>
 );
 
 return (
-    <div className="min-h-screen bg-gradient-to-r from-sky-100 to-blue-200 p-10 font-sans">
-    <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl p-10">
-        <h1 className="text-5xl font-bold text-center text-blue-700 mb-6">🔌 Energy Cost Predictor</h1>
-        <p className="text-center text-gray-600 mb-12">Estimate your annual electricity usage and cost based on your home's characteristics.</p>
+    <div className="min-h-screen bg-black text-white px-4 py-12">
+    <div className="max-w-5xl mx-auto bg-[#111] border border-gray-700 rounded-3xl p-10 shadow-2xl relative z-10">
+        <h1 id="typed" className="text-4xl md:text-5xl font-bold text-center mb-2"></h1>
+        <p className="text-center text-gray-400 mb-8">Estimate your annual electricity cost with real data.</p>
 
-        <form onSubmit={handleSubmit} className="space-y-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <form onSubmit={handleSubmit} className="space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {selectField("State", "state_postal", OPTIONS.state_postal)}
             {selectField("Climate Zone", "BA_climate", OPTIONS.BA_climate)}
             {selectField("IECC Code", "IECC_climate_code", OPTIONS.IECC_climate_code)}
@@ -109,17 +119,13 @@ return (
             {selectField("Heating Fuel", "FUELHEAT", OPTIONS.FUELHEAT)}
             {numberField("Refrigerators", "NUMFRIG")}
             {numberField("Freezers", "NUMFREEZ")}
-            {selectField("Oven", "OVEN", OPTIONS.OVEN)}
+            {selectField("Oven Type", "OVEN", OPTIONS.OVEN)}
         </div>
 
-        <div className="text-right text-sm text-gray-500">
-            Total Rooms: <strong>{formData.TOTROOMS}</strong>
-        </div>
-
-        <div className="text-center">
+        <div className="text-center mt-10">
             <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-3 rounded-full shadow-lg transition duration-300"
+            className="px-8 py-3 text-lg font-semibold bg-white text-black rounded-full hover:scale-105 transition-transform"
             >
             🔍 Predict
             </button>
@@ -127,11 +133,11 @@ return (
         </form>
 
         {result && (
-        <div className="mt-12 bg-green-50 border border-green-300 rounded-2xl p-6 text-center">
-            <h2 className="text-2xl font-semibold text-green-700 mb-2">Prediction Results</h2>
-            <p className="text-lg">Predicted Annual kWh: <strong>{result.predicted_kwh}</strong></p>
-            <p className="text-lg">Estimated Cost ($): <strong>{result.estimated_cost_usd}</strong></p>
-            <p className="text-sm text-gray-600">Rate Used: ${result.rate_used} per kWh</p>
+        <div className="mt-10 p-6 bg-green-700 bg-opacity-10 border border-green-500 rounded-2xl text-center">
+            <h2 className="text-2xl font-bold mb-2 text-green-300">📈 Prediction Results</h2>
+            <p className="text-lg">Predicted Annual kWh: <span className="font-bold">{result.predicted_kwh}</span></p>
+            <p className="text-lg">Estimated Cost: <span className="font-bold">${result.estimated_cost_usd}</span></p>
+            <p className="text-sm text-gray-400">Rate Used: ${result.rate_used}/kWh</p>
         </div>
         )}
     </div>
