@@ -254,8 +254,15 @@ return (
         </div>
     )}
 
-    <footer className="mt-12 text-sm text-gray-500">
-        Built by <a href="https://tplawton.github.io/website/" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">Thomas Lawton</a>
+    <footer className="w-full fixed bottom-0 left-0 py-4 bg-white shadow-inner text-center">
+        <a
+        href="https://tplawton.github.io/website/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+        >
+        Thomas Lawton
+        </a>
     </footer>
     </div>
 );
