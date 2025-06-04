@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "ded62ca51edc54fbf08b672026592e7c",
+    "revision": "8e693986dcbac2842352b8676e4172c2",
     "url": "/energy-cost-frontend/index.html"
   },
   {
-    "revision": "6f133508d9e2770c8862",
+    "revision": "fcc7116a6fe3f4d05f51",
     "url": "/energy-cost-frontend/static/css/main.5ecd60fb.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/energy-cost-frontend/static/js/3.a29efab2.chunk.js"
   },
   {
-    "revision": "6f133508d9e2770c8862",
-    "url": "/energy-cost-frontend/static/js/main.0b5d97c1.chunk.js"
+    "revision": "fcc7116a6fe3f4d05f51",
+    "url": "/energy-cost-frontend/static/js/main.4870200f.chunk.js"
   },
   {
     "revision": "cb39e41dc1eb22f1e26c",
