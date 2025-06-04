@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/energy-cost-frontend/static/css/main.e6c13ad2.css",
-    "main.js": "/energy-cost-frontend/static/js/main.55944a00.js",
+    "main.js": "/energy-cost-frontend/static/js/main.977f1bf9.js",
     "static/js/453.ac79944c.chunk.js": "/energy-cost-frontend/static/js/453.ac79944c.chunk.js",
     "index.html": "/energy-cost-frontend/index.html",
     "main.e6c13ad2.css.map": "/energy-cost-frontend/static/css/main.e6c13ad2.css.map",
-    "main.55944a00.js.map": "/energy-cost-frontend/static/js/main.55944a00.js.map",
+    "main.977f1bf9.js.map": "/energy-cost-frontend/static/js/main.977f1bf9.js.map",
     "453.ac79944c.chunk.js.map": "/energy-cost-frontend/static/js/453.ac79944c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.55944a00.js"
+    "static/js/main.977f1bf9.js"
   ]
 }
