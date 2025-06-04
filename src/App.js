@@ -190,37 +190,31 @@ const handleSubmit = async () => {
 return (
     <>
     <header className="w-full bg-black text-white px-8 py-4 shadow-md flex items-center justify-between">
-<h1 className="text-xl font-semibold tracking-wide">
-    Energy Cost Estimator
-</h1>
-<nav>
-    <a
-    href="https://tplawton.github.io/website/"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="text-white text-sm font-medium hover:text-indigo-300 transition"
-    >
-    Visit My Portfolio →
-    </a>
-</nav>
-</header>
+        <h1 className="text-xl font-semibold tracking-wide">Energy Cost Estimator</h1>
+        <nav>
+        <a
+            href="https://tplawton.github.io/website/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white text-sm font-medium hover:text-indigo-300 transition"
+        >
+            Visit My Portfolio →
+        </a>
+        </nav>
+    </header>
 
-
-    <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-blue-200 px-6 py-16 flex flex-col justify-center items-center text-center transition-all duration-700 ease-in-out">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-blue-200 px-4 py-16 flex flex-col justify-center items-center text-center">
         {!result ? (
-        <div className="card max-w-xl w-full bg-white p-8 rounded-2xl shadow-xl transition-all duration-500">
-            <div className="mb-4 text-sm text-gray-600">
-            Step {step + 1} of {steps.length}
-            </div>
-
-            <h1 className="text-3xl font-bold text-blue-700 mb-2">{current.label}</h1>
+        <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-2xl animate-fade-in">
+            <div className="text-sm text-gray-500 mb-2">Step {step + 1} of {steps.length}</div>
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">{current.label}</h2>
             <div className="text-sm text-gray-500 mb-6">{current.description}</div>
 
             {current.type === "select" ? (
             <select
                 value={formData[current.key] || ""}
                 onChange={handleChange}
-                className="w-full mb-6 px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:ring focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm shadow-sm focus:ring focus:ring-blue-200 mb-6"
             >
                 <option value="" disabled>Choose one</option>
                 {current.options.map((opt) => (
@@ -232,39 +226,33 @@ return (
                 type="number"
                 value={formData[current.key] || ""}
                 onChange={handleChange}
-                className="w-full mb-6 px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:ring focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm shadow-sm focus:ring focus:ring-blue-200 mb-6"
             />
             )}
 
-            <div className="mt-6 flex justify-between items-center">
+            <div className="flex flex-wrap justify-center gap-4">
             <button
                 onClick={handleBack}
-                className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
                 disabled={step === 0}
-            >
-                ⬅ Back
-            </button>
+                className="px-4 py-2 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 disabled:opacity-50"
+            >⬅ Back</button>
 
             <button
                 onClick={handleRestart}
-                className="px-4 py-2 bg-yellow-200 text-yellow-900 rounded hover:bg-yellow-300"
-            >
-                ⏮ Start Over
-            </button>
+                className="px-4 py-2 rounded-md bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
+            >⏮ Start Over</button>
 
             <button
                 onClick={handleNext}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                 disabled={!formData[current.key]}
-            >
-                {step === steps.length - 1 ? "Submit" : "Next →"}
-            </button>
+                className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+            >{step === steps.length - 1 ? "Submit" : "Next →"}</button>
             </div>
 
             {loading && <p className="mt-4 text-blue-600 animate-pulse">⏳ Predicting...</p>}
         </div>
         ) : (
-        <div className="card max-w-xl w-full bg-white p-8 rounded-2xl shadow-xl text-center">
+        <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-2xl text-center">
             <h2 className="text-2xl font-bold text-green-700 mb-4">Prediction Results</h2>
             <p className="text-lg">Predicted Annual kWh: <strong>{result.predicted_kwh}</strong></p>
             <p className="text-lg">Estimated Cost: <strong>${result.estimated_cost_usd}</strong></p>
@@ -272,9 +260,7 @@ return (
             <button
             onClick={handleRestart}
             className="mt-6 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            >
-            🔁 Start New Prediction
-            </button>
+            >🔁 Start New Prediction</button>
         </div>
         )}
     </div>
