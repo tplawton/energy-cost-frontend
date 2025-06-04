@@ -189,20 +189,22 @@ const handleSubmit = async () => {
 
 return (
     <>
-    <header className="w-full text-center py-6 bg-indigo-700 text-white shadow-md">
-        <h1 className="text-3xl font-bold tracking-wide">🔋 Energy Cost Estimator</h1>
-        <p className="mt-1 text-sm">
-        by {" "}
-        <a
-            href="https://tplawton.github.io"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-indigo-200"
-        >
-            Thomas Lawton
-        </a>
-        </p>
-    </header>
+    <header className="w-full bg-black text-white px-8 py-4 shadow-md flex items-center justify-between">
+<h1 className="text-xl font-semibold tracking-wide">
+    Energy Cost Estimator
+</h1>
+<nav>
+    <a
+    href="https://tplawton.github.io"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-white text-sm font-medium hover:text-indigo-300 transition"
+    >
+    Visit My Portfolio →
+    </a>
+</nav>
+</header>
+
 
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-blue-200 px-6 py-16 flex flex-col justify-center items-center text-center transition-all duration-700 ease-in-out">
         {!result ? (
