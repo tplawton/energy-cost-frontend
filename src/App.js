@@ -20,6 +20,7 @@ const climateMap = {
 "7B": "Very-Cold",
 "8AK": "Subarctic"
 };
+
 const steps = [
 {
     key: "state_postal",
@@ -33,7 +34,20 @@ const steps = [
     label: "What is your home's IECC climate code?",
     type: "select",
     options: OPTIONS.IECC_climate_code,
-    description: "Use this link to find your IECC climate code based on your location: \nhttps://basc.pnnl.gov/building-assemblies/climate-zone-lookup"
+    description: (
+    <span>
+        Use this {" "}
+        <a
+        href="https://basc.pnnl.gov/building-assemblies/climate-zone-lookup"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-600 underline hover:text-blue-800"
+        >
+        climate zone lookup tool
+        </a>{" "}
+        to find your code.
+    </span>
+    )
 },
 {
     key: "TYPEHUQ",
@@ -166,7 +180,7 @@ const handleSubmit = async () => {
     const res = await fetch("https://energy-cost-backend.onrender.com/predict", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(fullData),
+    body: JSON.stringify(fullData)
     });
     const data = await res.json();
     setResult(data);
@@ -174,77 +188,94 @@ const handleSubmit = async () => {
 };
 
 return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-blue-200 px-6 py-16 flex flex-col justify-center items-center text-center">
-    {!result ? (
+    <>
+    <header className="w-full text-center py-6 bg-indigo-700 text-white shadow-md">
+        <h1 className="text-3xl font-bold tracking-wide">🔋 Energy Cost Estimator</h1>
+        <p className="mt-1 text-sm">
+        by {" "}
+        <a
+            href="https://tplawton.github.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-indigo-200"
+        >
+            Thomas Lawton
+        </a>
+        </p>
+    </header>
+
+    <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-blue-200 px-6 py-16 flex flex-col justify-center items-center text-center transition-all duration-700 ease-in-out">
+        {!result ? (
         <div className="card max-w-xl w-full bg-white p-8 rounded-2xl shadow-xl transition-all duration-500">
-        <div className="mb-4 text-sm text-gray-600">
+            <div className="mb-4 text-sm text-gray-600">
             Step {step + 1} of {steps.length}
-        </div>
+            </div>
 
-        <h1 className="text-3xl font-bold text-blue-700 mb-2">{current.label}</h1>
-        <p className="text-sm text-gray-500 mb-6">{current.description}</p>
+            <h1 className="text-3xl font-bold text-blue-700 mb-2">{current.label}</h1>
+            <div className="text-sm text-gray-500 mb-6">{current.description}</div>
 
-        {current.type === "select" ? (
+            {current.type === "select" ? (
             <select
-            value={formData[current.key] || ""}
-            onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:ring focus:ring-blue-500"
+                value={formData[current.key] || ""}
+                onChange={handleChange}
+                className="w-full mb-6 px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:ring focus:ring-blue-500"
             >
-            <option value="" disabled>Choose one</option>
-            {current.options.map((opt) => (
+                <option value="" disabled>Choose one</option>
+                {current.options.map((opt) => (
                 <option key={opt} value={opt}>{opt}</option>
-            ))}
+                ))}
             </select>
-        ) : (
+            ) : (
             <input
-            type="number"
-            value={formData[current.key] || ""}
-            onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:ring focus:ring-blue-500"
+                type="number"
+                value={formData[current.key] || ""}
+                onChange={handleChange}
+                className="w-full mb-6 px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:ring focus:ring-blue-500"
             />
-        )}
+            )}
 
-        <div className="mt-6 flex justify-between items-center">
+            <div className="mt-6 flex justify-between items-center">
             <button
-            onClick={handleBack}
-            className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
-            disabled={step === 0}
+                onClick={handleBack}
+                className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+                disabled={step === 0}
             >
-            ⬅ Back
+                ⬅ Back
             </button>
 
             <button
-            onClick={handleRestart}
-            className="px-4 py-2 bg-yellow-200 text-yellow-900 rounded hover:bg-yellow-300"
+                onClick={handleRestart}
+                className="px-4 py-2 bg-yellow-200 text-yellow-900 rounded hover:bg-yellow-300"
             >
-            ⏮ Start Over
+                ⏮ Start Over
             </button>
 
             <button
-            onClick={handleNext}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            disabled={!formData[current.key]}
+                onClick={handleNext}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                disabled={!formData[current.key]}
             >
-            {step === steps.length - 1 ? "Submit" : "Next →"}
+                {step === steps.length - 1 ? "Submit" : "Next →"}
             </button>
+            </div>
+
+            {loading && <p className="mt-4 text-blue-600 animate-pulse">⏳ Predicting...</p>}
         </div>
-
-        {loading && <p className="mt-4 text-blue-600 animate-pulse">⏳ Predicting...</p>}
-        </div>
-    ) : (
+        ) : (
         <div className="card max-w-xl w-full bg-white p-8 rounded-2xl shadow-xl text-center">
-        <h2 className="text-2xl font-bold text-green-700 mb-4">Prediction Results</h2>
-        <p className="text-lg">Predicted Annual kWh: <strong>{result.predicted_kwh}</strong></p>
-        <p className="text-lg">Estimated Cost: <strong>${result.estimated_cost_usd}</strong></p>
-        <p className="text-sm text-gray-600 mt-2">Rate Used: ${result.rate_used}/kWh</p>
-        <button
+            <h2 className="text-2xl font-bold text-green-700 mb-4">Prediction Results</h2>
+            <p className="text-lg">Predicted Annual kWh: <strong>{result.predicted_kwh}</strong></p>
+            <p className="text-lg">Estimated Cost: <strong>${result.estimated_cost_usd}</strong></p>
+            <p className="text-sm text-gray-600 mt-2">Rate Used: ${result.rate_used}/kWh</p>
+            <button
             onClick={handleRestart}
             className="mt-6 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
+            >
             🔁 Start New Prediction
-        </button>
+            </button>
         </div>
-    )}
+        )}
     </div>
+    </>
 );
 }
