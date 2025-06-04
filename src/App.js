@@ -1,138 +1,195 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import OPTIONS from "./options";
 
-export default function EnergyPredictor() {
-const [formData, setFormData] = useState({
-    state_postal: "MA",
-    BA_climate: "Mixed-Humid",
-    IECC_climate_code: "4A",
-    TYPEHUQ: "2 - Single-Family Detached",
-    YEARMADERANGE: "7 - 2000-2009",
-    BEDROOMS: 2,
-    NCOMBATH: 2,
-    NHAFBATH: 1,
-    OTHROOMS: 3,
-    TOTROOMS: 8,
-    TOTSQFT_EN: 1800,
-    STORIES: 2,
-    NHSLDMEM: 4,
-    FUELHEAT: "1 - Electricity",
-    NUMFRIG: 1,
-    NUMFREEZ: 1,
-    WALLTYPE: "1 - Brick",
-    OVEN: "1 - Electric"
-});
+const steps = [
+{
+    key: "state_postal",
+    label: "Which U.S. state is the home in?",
+    description: "This determines the local electricity rate.",
+    type: "select",
+    options: OPTIONS.state_postal,
+},
+{
+    key: "BA_climate",
+    label: "What is the building's climate zone?",
+    description: "Select the regional climate that applies to your home.",
+    type: "select",
+    options: OPTIONS.BA_climate,
+},
+{
+    key: "IECC_climate_code",
+    label: "IECC Climate Code",
+    description: "Used for regional energy modeling.",
+    type: "select",
+    options: OPTIONS.IECC_climate_code,
+},
+{
+    key: "TYPEHUQ",
+    label: "Home Type",
+    description: "Choose the structure type of the building.",
+    type: "select",
+    options: OPTIONS.TYPEHUQ,
+},
+{
+    key: "YEARMADERANGE",
+    label: "Year Built",
+    description: "When was this home built?",
+    type: "select",
+    options: OPTIONS.YEARMADERANGE,
+},
+{
+    key: "TOTSQFT_EN",
+    label: "Square Footage",
+    description: "Total square footage of the home.",
+    type: "number",
+},
+{
+    key: "STORIES",
+    label: "Number of Stories",
+    description: "How many stories (floors) does the home have?",
+    type: "number",
+},
+{
+    key: "WALLTYPE",
+    label: "Wall Type",
+    description: "Select the predominant exterior wall material.",
+    type: "select",
+    options: OPTIONS.WALLTYPE,
+},
+{
+    key: "BEDROOMS",
+    label: "Number of Bedrooms",
+    description: "How many bedrooms are in the home?",
+    type: "number",
+},
+{
+    key: "NCOMBATH",
+    label: "Full Bathrooms",
+    description: "How many full bathrooms are there?",
+    type: "number",
+},
+{
+    key: "NHAFBATH",
+    label: "Half Bathrooms",
+    description: "How many half bathrooms are there?",
+    type: "number",
+},
+{
+    key: "OTHROOMS",
+    label: "Other Rooms",
+    description: "Count of rooms that are not bedrooms or bathrooms.",
+    type: "number",
+},
+{
+    key: "NHSLDMEM",
+    label: "Household Members",
+    description: "Number of people currently living in the home.",
+    type: "number",
+},
+{
+    key: "FUELHEAT",
+    label: "Heating Fuel",
+    description: "What is the main heating fuel used?",
+    type: "select",
+    options: OPTIONS.FUELHEAT,
+},
+{
+    key: "NUMFRIG",
+    label: "Refrigerators",
+    description: "How many refrigerators are in the home?",
+    type: "number",
+},
+{
+    key: "NUMFREEZ",
+    label: "Freezers",
+    description: "How many standalone freezers are there?",
+    type: "number",
+},
+{
+    key: "OVEN",
+    label: "Oven Type",
+    description: "What kind of oven does the home use?",
+    type: "select",
+    options: OPTIONS.OVEN,
+},
+];
 
+export default function EnergyStepForm() {
+const [formData, setFormData] = useState({});
+const [step, setStep] = useState(0);
 const [result, setResult] = useState(null);
 const [loading, setLoading] = useState(false);
 
-useEffect(() => {
-    const { BEDROOMS, NCOMBATH, OTHROOMS } = formData;
-    const totalRooms = Number(BEDROOMS || 0) + Number(NCOMBATH || 0) + Number(OTHROOMS || 0);
-    setFormData((prev) => ({ ...prev, TOTROOMS: totalRooms }));
-}, [formData.BEDROOMS, formData.NCOMBATH, formData.OTHROOMS]);
+const current = steps[step];
 
 const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [current.key]: e.target.value });
 };
 
-const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleNext = () => {
+    if (step < steps.length - 1) setStep((prev) => prev + 1);
+    else handleSubmit();
+};
+
+const handleSubmit = async () => {
     setLoading(true);
+    const totals = Number(formData.BEDROOMS || 0) + Number(formData.NCOMBATH || 0) + Number(formData.OTHROOMS || 0);
+    const fullData = { ...formData, TOTROOMS: totals };
     const res = await fetch("https://energy-cost-backend.onrender.com/predict", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(formData),
+    body: JSON.stringify(fullData),
     });
     const data = await res.json();
     setResult(data);
     setLoading(false);
 };
 
-const selectField = (label, name, options) => (
-    <div>
-    <label className="block text-sm font-medium capitalize mb-1 text-gray-700">{label}</label>
-    <select
-        name={name}
-        value={formData[name]}
-        onChange={handleChange}
-        className="w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm shadow-sm focus:ring-blue-500 focus:border-blue-500"
-    >
-        {options.map((opt) => (
-        <option key={opt} value={opt}>{opt}</option>
-        ))}
-    </select>
-    </div>
-);
-
-const numberField = (label, name) => (
-    <div>
-    <label className="block text-sm font-medium capitalize mb-1 text-gray-700">{label}</label>
-    <input
-        type="number"
-        name={name}
-        value={formData[name]}
-        onChange={handleChange}
-        className="w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm shadow-sm focus:ring-blue-500 focus:border-blue-500"
-    />
-    </div>
-);
-
 return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-12 px-4 animate-fadeIn">
-    <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-xl p-10 space-y-8">
-        <h1 className="text-4xl font-bold text-center text-blue-800">🔌 Energy Cost Predictor</h1>
-        <p className="text-center text-gray-600">Estimate your annual electricity cost based on your home's characteristics.</p>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-blue-200 px-6 py-16 flex flex-col justify-center items-center text-center">
+    {!result ? (
+        <div className="max-w-xl w-full bg-white p-8 rounded-2xl shadow-xl transition-all duration-500">
+        <h1 className="text-3xl font-bold text-blue-700 mb-2">{current.label}</h1>
+        <p className="text-sm text-gray-500 mb-6">{current.description}</p>
 
-        <form onSubmit={handleSubmit} className="space-y-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {selectField("State", "state_postal", OPTIONS.state_postal)}
-            {selectField("Climate Zone", "BA_climate", OPTIONS.BA_climate)}
-            {selectField("IECC Code", "IECC_climate_code", OPTIONS.IECC_climate_code)}
-            {selectField("Home Type", "TYPEHUQ", OPTIONS.TYPEHUQ)}
-            {selectField("Year Built", "YEARMADERANGE", OPTIONS.YEARMADERANGE)}
-            {numberField("Square Footage", "TOTSQFT_EN")}
-            {numberField("Stories", "STORIES")}
-            {selectField("Wall Type", "WALLTYPE", OPTIONS.WALLTYPE)}
-            {numberField("Bedrooms", "BEDROOMS")}
-            {numberField("Full Baths", "NCOMBATH")}
-            {numberField("Half Baths", "NHAFBATH")}
-            {numberField("Other Rooms", "OTHROOMS")}
-            {numberField("Household Members", "NHSLDMEM")}
-            {selectField("Heating Fuel", "FUELHEAT", OPTIONS.FUELHEAT)}
-            {numberField("Refrigerators", "NUMFRIG")}
-            {numberField("Freezers", "NUMFREEZ")}
-            {selectField("Oven", "OVEN", OPTIONS.OVEN)}
-        </div>
-
-        <div className="text-center text-sm text-gray-600 font-medium">
-            Total Rooms: <span className="font-semibold">{formData.TOTROOMS}</span>
-        </div>
-
-        <div className="text-center">
-            <button
-            type="submit"
-            className="mt-6 px-6 py-3 bg-blue-600 text-white text-lg font-semibold rounded-lg shadow hover:bg-blue-700 transition"
+        {current.type === "select" ? (
+            <select
+            value={formData[current.key] || ""}
+            onChange={handleChange}
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:ring focus:ring-blue-500"
             >
-            🔍 Predict
-            </button>
-        </div>
-        </form>
-
-        {loading && (
-        <div className="text-center text-blue-700 font-medium text-lg animate-pulse">⏳ Predicting...</div>
+            <option value="" disabled>Choose one</option>
+            {current.options.map((opt) => (
+                <option key={opt} value={opt}>{opt}</option>
+            ))}
+            </select>
+        ) : (
+            <input
+            type="number"
+            value={formData[current.key] || ""}
+            onChange={handleChange}
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:ring focus:ring-blue-500"
+            />
         )}
 
-        {result && !loading && (
-        <div className="mt-10 p-6 bg-green-50 border border-green-200 rounded-xl shadow-md text-center">
-            <h2 className="text-xl font-semibold mb-2 text-green-700">Prediction Results</h2>
-            <p className="text-lg font-medium">Predicted Annual kWh: <span className="font-semibold">{result.predicted_kwh}</span></p>
-            <p className="text-lg font-medium">Estimated Cost ($): <span className="font-semibold">{result.estimated_cost_usd}</span></p>
-            <p className="text-sm text-gray-600">Rate Used: ${result.rate_used} per kWh</p>
+        <button
+            onClick={handleNext}
+            className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"
+            disabled={!formData[current.key]}
+        >
+            {step === steps.length - 1 ? "Submit" : "Next →"}
+        </button>
+
+        {loading && <p className="mt-4 text-blue-600 animate-pulse">⏳ Predicting...</p>}
         </div>
-        )}
-    </div>
+    ) : (
+        <div className="max-w-xl w-full bg-white p-8 rounded-2xl shadow-xl text-center">
+        <h2 className="text-2xl font-bold text-green-700 mb-4">Prediction Results</h2>
+        <p className="text-lg">Predicted Annual kWh: <strong>{result.predicted_kwh}</strong></p>
+        <p className="text-lg">Estimated Cost: <strong>${result.estimated_cost_usd}</strong></p>
+        <p className="text-sm text-gray-600 mt-2">Rate Used: ${result.rate_used}/kWh</p>
+        </div>
+    )}
     </div>
 );
 }
