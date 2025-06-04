@@ -195,7 +195,7 @@ return (
 </h1>
 <nav>
     <a
-    href="https://tplawton.github.io"
+    href="https://tplawton.github.io/website/"
     target="_blank"
     rel="noopener noreferrer"
     className="text-white text-sm font-medium hover:text-indigo-300 transition"
