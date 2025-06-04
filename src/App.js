@@ -188,80 +188,82 @@ const handleSubmit = async () => {
 };
 
 return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-blue-200 flex flex-col justify-between items-center px-4 py-10 text-center">
-    <div className="mb-8">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-indigo-100 to-blue-200">
+    <main className="flex-grow px-4 pt-10 pb-24 flex flex-col items-center text-center">
+        <div className="mb-8">
         <h1 className="text-4xl font-extrabold text-gray-800 mb-2">🔋 Energy Cost Estimator</h1>
         <p className="text-md text-gray-600 max-w-xl">Answer a few questions about your home to estimate your annual electricity usage and cost.</p>
-    </div>
+        </div>
 
-    {!result ? (
+        {!result ? (
         <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-2xl">
-        <div className="text-sm text-gray-500 mb-2">Step {step + 1} of {steps.length}</div>
-        <h2 className="text-xl font-semibold text-gray-800 mb-2">{current.label}</h2>
-        <div className="text-sm text-gray-500 mb-6">{current.description}</div>
+            <div className="text-sm text-gray-500 mb-2">Step {step + 1} of {steps.length}</div>
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">{current.label}</h2>
+            <div className="text-sm text-gray-500 mb-6">{current.description}</div>
 
-        {current.type === "select" ? (
+            {current.type === "select" ? (
             <select
-            value={formData[current.key] || ""}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm shadow-sm focus:ring focus:ring-blue-200 mb-6"
+                value={formData[current.key] || ""}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm shadow-sm focus:ring focus:ring-blue-200 mb-6"
             >
-            <option value="" disabled>Choose one</option>
-            {current.options.map((opt) => (
+                <option value="" disabled>Choose one</option>
+                {current.options.map((opt) => (
                 <option key={opt} value={opt}>{opt}</option>
-            ))}
+                ))}
             </select>
-        ) : (
+            ) : (
             <input
-            type="number"
-            value={formData[current.key] || ""}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm shadow-sm focus:ring focus:ring-blue-200 mb-6"
+                type="number"
+                value={formData[current.key] || ""}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm shadow-sm focus:ring focus:ring-blue-200 mb-6"
             />
-        )}
+            )}
 
-        <div className="flex justify-center gap-4">
+            <div className="flex justify-center gap-4">
             <button
-            onClick={handleBack}
-            disabled={step === 0}
-            className="px-4 py-2 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 disabled:opacity-50"
+                onClick={handleBack}
+                disabled={step === 0}
+                className="px-4 py-2 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 disabled:opacity-50"
             >⬅ Back</button>
 
             <button
-            onClick={handleRestart}
-            className="px-4 py-2 rounded-md bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
+                onClick={handleRestart}
+                className="px-4 py-2 rounded-md bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
             >⏮ Start Over</button>
 
             <button
-            onClick={handleNext}
-            disabled={!formData[current.key]}
-            className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+                onClick={handleNext}
+                disabled={!formData[current.key]}
+                className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
             >{step === steps.length - 1 ? "Submit" : "Next →"}</button>
-        </div>
+            </div>
 
-        {loading && <p className="mt-4 text-blue-600 animate-pulse">⏳ Predicting...</p>}
+            {loading && <p className="mt-4 text-blue-600 animate-pulse">⏳ Predicting...</p>}
         </div>
-    ) : (
+        ) : (
         <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-2xl text-center">
-        <h2 className="text-2xl font-bold text-green-700 mb-4">Prediction Results</h2>
-        <p className="text-lg">Predicted Annual kWh: <strong>{result.predicted_kwh}</strong></p>
-        <p className="text-lg">Estimated Cost: <strong>${result.estimated_cost_usd}</strong></p>
-        <p className="text-sm text-gray-600 mt-2">Rate Used: ${result.rate_used}/kWh</p>
-        <button
+            <h2 className="text-2xl font-bold text-green-700 mb-4">Prediction Results</h2>
+            <p className="text-lg">Predicted Annual kWh: <strong>{result.predicted_kwh}</strong></p>
+            <p className="text-lg">Estimated Cost: <strong>${result.estimated_cost_usd}</strong></p>
+            <p className="text-sm text-gray-600 mt-2">Rate Used: ${result.rate_used}/kWh</p>
+            <button
             onClick={handleRestart}
             className="mt-6 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >🔁 Start New Prediction</button>
+            >🔁 Start New Prediction</button>
         </div>
-    )}
+        )}
+    </main>
 
-    <footer className="w-full fixed bottom-0 left-0 py-4 bg-white shadow-inner text-center">
+    <footer className="w-full bg-white shadow-inner text-center py-4">
         <a
         href="https://tplawton.github.io/website/"
         target="_blank"
         rel="noopener noreferrer"
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+        className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
         >
-        Thomas Lawton
+        Built by Thomas Lawton
         </a>
     </footer>
     </div>
