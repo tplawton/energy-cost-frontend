@@ -33,7 +33,7 @@ const steps = [
     label: "What is your home's IECC climate code?",
     type: "select",
     options: OPTIONS.IECC_climate_code,
-    description: "Use the guide below to find your IECC climate code based on your location and climate:\nhttps://basc.pnnl.gov/images/iecc-climate-zone-map"
+    description: "Use this link to find your IECC climate code based on your location: \nhttps://basc.pnnl.gov/building-assemblies/climate-zone-lookup"
 },
 {
     key: "TYPEHUQ",
@@ -176,7 +176,7 @@ const handleSubmit = async () => {
 return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-blue-200 px-6 py-16 flex flex-col justify-center items-center text-center">
     {!result ? (
-        <div className="max-w-xl w-full bg-white p-8 rounded-2xl shadow-xl transition-all duration-500">
+        <div className="card max-w-xl w-full bg-white p-8 rounded-2xl shadow-xl transition-all duration-500">
         <div className="mb-4 text-sm text-gray-600">
             Step {step + 1} of {steps.length}
         </div>
@@ -232,7 +232,7 @@ return (
         {loading && <p className="mt-4 text-blue-600 animate-pulse">⏳ Predicting...</p>}
         </div>
     ) : (
-        <div className="max-w-xl w-full bg-white p-8 rounded-2xl shadow-xl text-center">
+        <div className="card max-w-xl w-full bg-white p-8 rounded-2xl shadow-xl text-center">
         <h2 className="text-2xl font-bold text-green-700 mb-4">Prediction Results</h2>
         <p className="text-lg">Predicted Annual kWh: <strong>{result.predicted_kwh}</strong></p>
         <p className="text-lg">Estimated Cost: <strong>${result.estimated_cost_usd}</strong></p>
