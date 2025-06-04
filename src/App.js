@@ -1,117 +1,129 @@
 import React, { useState } from "react";
 import OPTIONS from "./options";
 
+const climateMap = {
+"1A": "Hot-Humid",
+"2A": "Hot-Humid",
+"2B": "Hot-Dry",
+"3A": "Hot-Humid",
+"3B": "Hot-Dry",
+"3C": "Marine",
+"4A": "Mixed-Humid",
+"4B": "Mixed-Dry",
+"4C": "Marine",
+"5A": "Cold",
+"5B": "Cold",
+"6A": "Cold",
+"6B": "Cold",
+"7A": "Very-Cold",
+"7AK": "Subarctic",
+"7B": "Very-Cold",
+"8AK": "Subarctic"
+};
 const steps = [
 {
     key: "state_postal",
-    label: "Which U.S. state is the home in?",
-    description: "This determines the local electricity rate.",
+    label: "Which U.S. state is your home located in?",
     type: "select",
     options: OPTIONS.state_postal,
-},
-{
-    key: "BA_climate",
-    label: "What is the building's climate zone?",
-    description: "Select the regional climate that applies to your home.",
-    type: "select",
-    options: OPTIONS.BA_climate,
+    description: "Your state helps us determine your local electricity rates."
 },
 {
     key: "IECC_climate_code",
-    label: "IECC Climate Code",
-    description: "Used for regional energy modeling.",
+    label: "What is your home's IECC climate code?",
     type: "select",
     options: OPTIONS.IECC_climate_code,
+    description: "Use the guide below to find your IECC climate code based on your location and climate:\nhttps://basc.pnnl.gov/images/iecc-climate-zone-map"
 },
 {
     key: "TYPEHUQ",
-    label: "Home Type",
-    description: "Choose the structure type of the building.",
+    label: "What type of housing unit do you live in?",
     type: "select",
     options: OPTIONS.TYPEHUQ,
+    description: "Choose the category that best describes your home's structure."
 },
 {
     key: "YEARMADERANGE",
-    label: "Year Built",
-    description: "When was this home built?",
+    label: "When was your home built?",
     type: "select",
     options: OPTIONS.YEARMADERANGE,
+    description: "Homes built in different decades often have different insulation and efficiency levels."
 },
 {
     key: "TOTSQFT_EN",
-    label: "Square Footage",
-    description: "Total square footage of the home.",
+    label: "What is the total square footage of your home?",
     type: "number",
+    description: "Include finished basement and livable areas in this total."
 },
 {
     key: "STORIES",
-    label: "Number of Stories",
-    description: "How many stories (floors) does the home have?",
+    label: "How many stories (floors) does your home have?",
     type: "number",
+    description: "For example, a single-floor ranch = 1, a two-story house = 2."
 },
 {
     key: "WALLTYPE",
-    label: "Wall Type",
-    description: "Select the predominant exterior wall material.",
+    label: "What is the primary exterior wall type of your home?",
     type: "select",
     options: OPTIONS.WALLTYPE,
+    description: "This impacts insulation and energy efficiency."
 },
 {
     key: "BEDROOMS",
-    label: "Number of Bedrooms",
-    description: "How many bedrooms are in the home?",
+    label: "How many bedrooms are in your home?",
     type: "number",
+    description: "This helps us estimate total living space and energy demand."
 },
 {
     key: "NCOMBATH",
-    label: "Full Bathrooms",
-    description: "How many full bathrooms are there?",
+    label: "How many full bathrooms (with tub or shower) are there?",
     type: "number",
+    description: "Each full bath typically increases overall water and energy use."
 },
 {
     key: "NHAFBATH",
-    label: "Half Bathrooms",
-    description: "How many half bathrooms are there?",
+    label: "How many half bathrooms (toilet only) are there?",
     type: "number",
+    description: "Half bathrooms use less energy but still contribute to water use."
 },
 {
     key: "OTHROOMS",
-    label: "Other Rooms",
-    description: "Count of rooms that are not bedrooms or bathrooms.",
+    label: "How many other rooms (e.g., kitchen, living room, office)?",
     type: "number",
+    description: "This helps complete our total room estimate."
 },
 {
     key: "NHSLDMEM",
-    label: "Household Members",
-    description: "Number of people currently living in the home.",
+    label: "How many people live in your home?",
     type: "number",
+    description: "Household size impacts overall electricity usage."
 },
 {
     key: "FUELHEAT",
-    label: "Heating Fuel",
-    description: "What is the main heating fuel used?",
+    label: "What type of fuel is used to heat your home?",
     type: "select",
     options: OPTIONS.FUELHEAT,
+    description: "Homes that use electric heating generally consume more electricity."
 },
 {
     key: "NUMFRIG",
-    label: "Refrigerators",
-    description: "How many refrigerators are in the home?",
+    label: "How many refrigerators do you use?",
     type: "number",
+    description: "Refrigerators are always running and can significantly affect usage."
 },
 {
     key: "NUMFREEZ",
-    label: "Freezers",
-    description: "How many standalone freezers are there?",
+    label: "How many standalone freezers are there?",
     type: "number",
+    description: "Standalone freezers often consume more power than fridges."
 },
 {
     key: "OVEN",
-    label: "Oven Type",
-    description: "What kind of oven does the home use?",
+    label: "What type of oven do you use?",
     type: "select",
     options: OPTIONS.OVEN,
-},
+    description: "Electric ovens use more electricity than gas or other fuel types."
+}
 ];
 
 export default function EnergyStepForm() {
@@ -123,12 +135,28 @@ const [loading, setLoading] = useState(false);
 const current = steps[step];
 
 const handleChange = (e) => {
-    setFormData({ ...formData, [current.key]: e.target.value });
+    const updatedValue = e.target.value;
+    const newData = { ...formData, [current.key]: updatedValue };
+
+    if (current.key === "IECC_climate_code") {
+    newData.BA_climate = climateMap[updatedValue] || "";
+    }
+    setFormData(newData);
 };
 
 const handleNext = () => {
     if (step < steps.length - 1) setStep((prev) => prev + 1);
     else handleSubmit();
+};
+
+const handleBack = () => {
+    if (step > 0) setStep((prev) => prev - 1);
+};
+
+const handleRestart = () => {
+    setStep(0);
+    setFormData({});
+    setResult(null);
 };
 
 const handleSubmit = async () => {
@@ -149,6 +177,10 @@ return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-blue-200 px-6 py-16 flex flex-col justify-center items-center text-center">
     {!result ? (
         <div className="max-w-xl w-full bg-white p-8 rounded-2xl shadow-xl transition-all duration-500">
+        <div className="mb-4 text-sm text-gray-600">
+            Step {step + 1} of {steps.length}
+        </div>
+
         <h1 className="text-3xl font-bold text-blue-700 mb-2">{current.label}</h1>
         <p className="text-sm text-gray-500 mb-6">{current.description}</p>
 
@@ -172,13 +204,30 @@ return (
             />
         )}
 
-        <button
+        <div className="mt-6 flex justify-between items-center">
+            <button
+            onClick={handleBack}
+            className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+            disabled={step === 0}
+            >
+            ⬅ Back
+            </button>
+
+            <button
+            onClick={handleRestart}
+            className="px-4 py-2 bg-yellow-200 text-yellow-900 rounded hover:bg-yellow-300"
+            >
+            ⏮ Start Over
+            </button>
+
+            <button
             onClick={handleNext}
-            className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
             disabled={!formData[current.key]}
-        >
+            >
             {step === steps.length - 1 ? "Submit" : "Next →"}
-        </button>
+            </button>
+        </div>
 
         {loading && <p className="mt-4 text-blue-600 animate-pulse">⏳ Predicting...</p>}
         </div>
@@ -188,6 +237,12 @@ return (
         <p className="text-lg">Predicted Annual kWh: <strong>{result.predicted_kwh}</strong></p>
         <p className="text-lg">Estimated Cost: <strong>${result.estimated_cost_usd}</strong></p>
         <p className="text-sm text-gray-600 mt-2">Rate Used: ${result.rate_used}/kWh</p>
+        <button
+            onClick={handleRestart}
+            className="mt-6 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+            🔁 Start New Prediction
+        </button>
         </div>
     )}
     </div>
