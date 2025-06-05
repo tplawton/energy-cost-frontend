@@ -189,7 +189,7 @@ const handleSubmit = async () => {
 };
 
 return (
-    <div className="page-container">
+    <div className="page-container dark-theme">
     <header className="header">
         <h1>🔋 Energy Cost Estimator</h1>
         <p>Answer a few questions about your home to estimate your annual electricity usage and cost.</p>
@@ -197,7 +197,7 @@ return (
 
     <main className="main-content">
         {!result ? (
-        <div className="question-card">
+        <div className="question-card animate-in">
             <div className="step-info">Step {step + 1} of {steps.length}</div>
             <h2>{current.label}</h2>
             <p className="description">{current.description}</p>
@@ -229,7 +229,7 @@ return (
             {loading && <p className="loading">⏳ Predicting...</p>}
         </div>
         ) : (
-        <div className="result-card">
+        <div className="result-card animate-in">
             <h2>Prediction Results</h2>
             <p><strong>Predicted Annual kWh:</strong> {result.predicted_kwh}</p>
             <p><strong>Estimated Cost:</strong> ${result.estimated_cost_usd}</p>
