@@ -11,6 +11,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-scripts": "^3.0.1",
+    "three": "^0.177.0",
     "typed.js": "^2.1.0",
     "web-vitals": "^2.1.4"
   },
