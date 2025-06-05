@@ -152,7 +152,6 @@ const current = steps[step];
 const handleChange = (e) => {
     const updatedValue = e.target.value;
     const newData = { ...formData, [current.key]: updatedValue };
-
     if (current.key === "IECC_climate_code") {
     newData.BA_climate = climateMap[updatedValue] || "";
     }
@@ -188,24 +187,30 @@ const handleSubmit = async () => {
     setLoading(false);
 };
 
+  const progress = ((step + 1) / steps.length) * 100;
+
 return (
-    <div className="page-container dark-theme">
-    <header className="header">
-        <h1>🔋 Energy Cost Estimator</h1>
-        <p>Answer a few questions about your home to estimate your annual electricity usage and cost.</p>
+    <div className="min-h-screen flex flex-col justify-between bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+    <header className="w-full py-6 bg-gray-950 shadow-md text-center">
+        <h1 className="text-3xl font-bold tracking-wide">⚡ Electric Bill Predictor</h1>
+        <p className="text-sm text-gray-400 mt-1">Estimate your home's electricity cost with ease</p>
     </header>
 
-    <main className="main-content">
+    <div className="px-4 py-10 flex-grow flex flex-col items-center justify-center text-center">
         {!result ? (
-        <div className="question-card animate-in">
-            <div className="step-info">Step {step + 1} of {steps.length}</div>
-            <h2>{current.label}</h2>
-            <p className="description">{current.description}</p>
+        <div className="card w-full max-w-2xl bg-white text-gray-800 p-8 rounded-xl shadow-2xl transition-all duration-500">
+            <div className="w-full bg-gray-200 h-2 rounded mb-6 overflow-hidden">
+            <div className="bg-blue-500 h-full transition-all duration-700 ease-in-out" style={{ width: `${progress}%` }}></div>
+            </div>
+
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{current.label}</h2>
+            <div className="text-sm text-gray-600 mb-6">{current.description}</div>
 
             {current.type === "select" ? (
             <select
                 value={formData[current.key] || ""}
                 onChange={handleChange}
+                className="w-full mb-6 px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:ring focus:ring-blue-500"
             >
                 <option value="" disabled>Choose one</option>
                 {current.options.map((opt) => (
@@ -217,30 +222,58 @@ return (
                 type="number"
                 value={formData[current.key] || ""}
                 onChange={handleChange}
+                className="w-full mb-6 px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:ring focus:ring-blue-500"
             />
             )}
 
-            <div className="button-group">
-            <button onClick={handleBack} disabled={step === 0}>⬅ Back</button>
-            <button onClick={handleRestart}>⏮ Start Over</button>
-            <button onClick={handleNext} disabled={!formData[current.key]}>{step === steps.length - 1 ? "Submit" : "Next →"}</button>
+            <div className="mt-6 flex justify-between flex-wrap gap-3">
+            <button
+                onClick={handleBack}
+                className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+                disabled={step === 0}
+            >
+                ⬅ Back
+            </button>
+            <button
+                onClick={handleRestart}
+                className="px-4 py-2 bg-yellow-200 text-yellow-900 rounded hover:bg-yellow-300"
+            >
+                ⏮ Start Over
+            </button>
+            <button
+                onClick={handleNext}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                disabled={!formData[current.key]}
+            >
+                {step === steps.length - 1 ? "Submit" : "Next →"}
+            </button>
             </div>
 
-            {loading && <p className="loading">⏳ Predicting...</p>}
+            {loading && <p className="mt-4 text-blue-600 animate-pulse">⏳ Predicting...</p>}
         </div>
         ) : (
-        <div className="result-card animate-in">
-            <h2>Prediction Results</h2>
-            <p><strong>Predicted Annual kWh:</strong> {result.predicted_kwh}</p>
-            <p><strong>Estimated Cost:</strong> ${result.estimated_cost_usd}</p>
-            <p className="rate-note">Rate Used: ${result.rate_used}/kWh</p>
-            <button onClick={handleRestart}>🔁 Start New Prediction</button>
+        <div className="card w-full max-w-xl bg-white text-gray-900 p-8 rounded-xl shadow-2xl text-center">
+            <h2 className="text-2xl font-bold text-green-700 mb-4">Prediction Results</h2>
+            <p className="text-lg">Predicted Annual kWh: <strong>{result.predicted_kwh}</strong></p>
+            <p className="text-lg">Estimated Cost: <strong>${result.estimated_cost_usd}</strong></p>
+            <p className="text-sm text-gray-600 mt-2">Rate Used: ${result.rate_used}/kWh</p>
+            <button
+            onClick={handleRestart}
+            className="mt-6 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+            🔁 Start New Prediction
+            </button>
         </div>
         )}
-    </main>
+    </div>
 
-    <footer className="footer">
-        <a href="https://tplawton.github.io/website/" target="_blank" rel="noopener noreferrer">
+    <footer className="w-full bg-gray-950 py-4 text-center text-sm text-gray-400">
+        <a
+        href="https://tplawton.github.io/website/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-block px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded transition"
+        >
         Built by Thomas Lawton
         </a>
     </footer>
