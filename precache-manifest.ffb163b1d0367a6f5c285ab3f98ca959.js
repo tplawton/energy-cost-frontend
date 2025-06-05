@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "1ed297d0c9010f73a31d33d0de55af03",
+    "revision": "4bf5356a1ecc18b8fc6f0e8a3a55ba87",
     "url": "/energy-cost-frontend/index.html"
   },
   {
