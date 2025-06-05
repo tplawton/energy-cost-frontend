@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import NET from "vanta/dist/vanta.net.min";
+import NET from "vanta/net"; 
 import * as THREE from "three";
 
 export default function VantaNet() {
