@@ -198,17 +198,18 @@ return (
     <main className="main-content">
         {!result ? (
         <div className="question-card animate-in">
-            <div className="w-full mb-6">
-                <div className="h-2 bg-gray-300 rounded-full overflow-hidden">
+            <div className="progress-wrapper">
+                <div className="progress-bar-container">
                     <div
-                        className="h-full bg-blue-600 transition-all duration-500"
+                        className="progress-bar"
                         style={{ width: `${((step + 1) / steps.length) * 100}%` }}
                     />
                 </div>
-            <div className="text-xs text-gray-500 mt-1 text-right">
-                Step {step + 1} of {steps.length}
+                <div className="progress-text">
+                    Step {step + 1} of {steps.length}
+                </div>
             </div>
-        </div>
+
             <h2>{current.label}</h2>
             <p className="description">{current.description}</p>
 
