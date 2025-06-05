@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/energy-cost-frontend/precache-manifest.0f73542d8b8f44421c062e6178fd7de3.js"
+  "/energy-cost-frontend/precache-manifest.f4824e96cbcac75345801178b4a8b93e.js"
 );
 
 self.addEventListener('message', (event) => {
