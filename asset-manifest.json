@@ -1,27 +1,24 @@
 {
   "files": {
-    "main.css": "/energy-cost-frontend/static/css/main.59e5499b.chunk.css",
-    "main.js": "/energy-cost-frontend/static/js/main.d0f3a5b1.chunk.js",
-    "main.js.map": "/energy-cost-frontend/static/js/main.d0f3a5b1.chunk.js.map",
-    "runtime-main.js": "/energy-cost-frontend/static/js/runtime-main.0d988af1.js",
-    "runtime-main.js.map": "/energy-cost-frontend/static/js/runtime-main.0d988af1.js.map",
+    "main.css": "/energy-cost-frontend/static/css/main.5ea1f175.chunk.css",
+    "main.js": "/energy-cost-frontend/static/js/main.d136d1bd.chunk.js",
+    "main.js.map": "/energy-cost-frontend/static/js/main.d136d1bd.chunk.js.map",
+    "runtime-main.js": "/energy-cost-frontend/static/js/runtime-main.f13b2e80.js",
+    "runtime-main.js.map": "/energy-cost-frontend/static/js/runtime-main.f13b2e80.js.map",
     "static/js/2.5e00a357.chunk.js": "/energy-cost-frontend/static/js/2.5e00a357.chunk.js",
     "static/js/2.5e00a357.chunk.js.map": "/energy-cost-frontend/static/js/2.5e00a357.chunk.js.map",
-    "static/js/3.0f8ef669.chunk.js": "/energy-cost-frontend/static/js/3.0f8ef669.chunk.js",
-    "static/js/3.0f8ef669.chunk.js.map": "/energy-cost-frontend/static/js/3.0f8ef669.chunk.js.map",
-    "static/js/4.2665a4a0.chunk.js": "/energy-cost-frontend/static/js/4.2665a4a0.chunk.js",
-    "static/js/4.2665a4a0.chunk.js.map": "/energy-cost-frontend/static/js/4.2665a4a0.chunk.js.map",
+    "static/js/3.d070c993.chunk.js": "/energy-cost-frontend/static/js/3.d070c993.chunk.js",
+    "static/js/3.d070c993.chunk.js.map": "/energy-cost-frontend/static/js/3.d070c993.chunk.js.map",
     "index.html": "/energy-cost-frontend/index.html",
-    "precache-manifest.dcc724e77173e881995477c4235ace52.js": "/energy-cost-frontend/precache-manifest.dcc724e77173e881995477c4235ace52.js",
+    "precache-manifest.53acd0607744b776214878727d05a048.js": "/energy-cost-frontend/precache-manifest.53acd0607744b776214878727d05a048.js",
     "service-worker.js": "/energy-cost-frontend/service-worker.js",
-    "static/css/main.59e5499b.chunk.css.map": "/energy-cost-frontend/static/css/main.59e5499b.chunk.css.map",
-    "static/js/2.5e00a357.chunk.js.LICENSE.txt": "/energy-cost-frontend/static/js/2.5e00a357.chunk.js.LICENSE.txt",
-    "static/js/3.0f8ef669.chunk.js.LICENSE.txt": "/energy-cost-frontend/static/js/3.0f8ef669.chunk.js.LICENSE.txt"
+    "static/css/main.5ea1f175.chunk.css.map": "/energy-cost-frontend/static/css/main.5ea1f175.chunk.css.map",
+    "static/js/2.5e00a357.chunk.js.LICENSE.txt": "/energy-cost-frontend/static/js/2.5e00a357.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.0d988af1.js",
+    "static/js/runtime-main.f13b2e80.js",
     "static/js/2.5e00a357.chunk.js",
-    "static/css/main.59e5499b.chunk.css",
-    "static/js/main.d0f3a5b1.chunk.js"
+    "static/css/main.5ea1f175.chunk.css",
+    "static/js/main.d136d1bd.chunk.js"
   ]
 }
