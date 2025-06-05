@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import OPTIONS from "./options";
 import "./App.css";
-import VantaNet from "./VantaNet";
 
 const climateMap = {
 "1A": "Hot-Humid",
@@ -195,7 +194,6 @@ return (
         <h1>Electricity Bill Estimator</h1>
         <p>Answer a few questions about your home to estimate your annual electricity usage and cost.</p>
     </header>
-    <VantaNet />
     <main className="main-content">
         {!result ? (
         <div className="question-card animate-in">
